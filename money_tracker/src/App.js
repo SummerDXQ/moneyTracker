@@ -3,6 +3,8 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 import PriceList from './components/PriceList'
+import ViewTab from './components/ViewTab'
+import {LIST_VIEW,CHART_VIEW} from './utility'
 
 const items = [
   {
@@ -33,11 +35,15 @@ const items = [
 function App() {
   return (
     <div className="App">
-        <PriceList 
+        {/* <PriceList 
             items = {items}
             onModifyItem = {(item)=>{alert(item.id)}}
             onDeleteItem = {(item)=>{alert(item.id)}}
-        ></PriceList>
+        ></PriceList> */}
+        <ViewTab
+            activeTab={LIST_VIEW}
+            onTabChange={(view)=>{console.log(view)}}
+        /> 
     </div>
   );
 }

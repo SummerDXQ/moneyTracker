@@ -19,7 +19,6 @@ const PriceList = ({items,onModifyItem,onDeleteItem}) =>{
                                 color={'#fff'}
                                 icon={item.category.iconName}
                             />
-                            
                         </span>
                         <span className='col-5'>
                             {item.title}
