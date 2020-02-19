@@ -1,10 +1,15 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
+  background: #efefef;
 }
 
+header{
+  
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -28,6 +33,9 @@
   color: #61dafb;
 }
 
+.content-area{
+  background: #fff;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

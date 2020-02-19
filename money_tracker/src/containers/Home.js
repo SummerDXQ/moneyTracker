@@ -3,7 +3,8 @@ import {LIST_VIEW,CHART_VIEW,TYPE_INCOME,TYPE_OUTCOME} from '../utility'
 import PriceList from '../components/PriceList'
 import ViewTab from '../components/ViewTab'
 import MonthPicker from '../components/MonthPicker'
-// import CreateBtn from '../components'
+import TotalPrice from '../components/TotalPrice'
+import logo from '../logo.svg'
 
 const items = [
     {
@@ -14,7 +15,7 @@ const items = [
       'category':{
         'id':'1',
         'name':'travel',
-        'type':'outcome',
+        'type':'income',
         'iconName':'ios-plane'
       }
     },
@@ -34,13 +35,19 @@ const items = [
 
   class Home extends Component{
       render(){
-          let totalIncome=0, totalOutcome=0
-
+          let totalIncome=0, totalOutcome=0;
+          items.forEach(item=>{
+              if(item.category.type===TYPE_OUTCOME){
+                  totalOutcome += item.price
+              }else{
+                  totalIncome += item.price
+              }
+          })
           return(
               <React.Fragment>
                    <header className='App-header'>
                        <div className='row mb-5'>
-
+                           <img scr={logo} className='App-logo' alt='logo'/>
                        </div>
                        <div className='row'>
                            <div className='col'>
@@ -49,18 +56,27 @@ const items = [
                                     onModifyItem = {(item)=>{alert(item.id)}}
                                     onDeleteItem = {(item)=>{alert(item.id)}}
                                 ></PriceList> */}
-                                {/* <ViewTab
-                                    activeTab={LIST_VIEW}
-                                    onTabChange={(view)=>{console.log(view)}}
-                                />  */}
+                                
                                 <MonthPicker
                                     year={2020}
                                     month={2}
                                     onChange={(year,month)=>{console.log(year,month)}}
                                 />
                            </div>
+                           <div className='col'>
+                               <TotalPrice
+                                    income = {totalIncome}
+                                    outcome = {totalOutcome}
+                               />
+                           </div>
                        </div>
                    </header>
+                   <div className='content-area py-3 px-3'>
+                       <ViewTab
+                            activeTab={LIST_VIEW}
+                            onTabChange={(view)=>{console.log(view)}}
+                        /> 
+                   </div>
               </React.Fragment>
           )
       }
