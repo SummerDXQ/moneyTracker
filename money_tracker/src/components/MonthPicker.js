@@ -4,7 +4,6 @@ import {padLeft,range} from '../utility'
 
 // 点击其他地方，也收回
 // help函数
-// dropdown年月的改变
 export default class MonthPicker extends Component{
     constructor(props){
         super(props);
