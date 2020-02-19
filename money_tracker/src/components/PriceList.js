@@ -3,6 +3,8 @@ import Ionicon from 'react-ionicons'
 import PropTypes from 'prop-types'
 
 const PriceList = ({items,onModifyItem,onDeleteItem}) =>{
+    console.log('items[0]')
+    console.log(items)
     return (
         <ul className="list-group list-group-flush">
             {

@@ -8,10 +8,27 @@ export default class MonthPicker extends Component{
     constructor(props){
         super(props);
         this.state={
-            isOpen:true,
+            isOpen:false,
             selectedYear:this.props.year, 
             selectMonth:this.props.month
         }
+    }
+    componentDidMount(){
+        console.log('加载完成')
+        console.log(document)
+        document.body.addEventListener('click',this.handleClick,false)
+    }
+    componentWillUnmount(){
+        document.removeEventListener('click',this.handleClick,false)
+    }
+    handleClick=(event)=>{
+        console.log('点击屏幕')
+        if(this.node.contains(event.target)){
+            return
+        }
+        this.setState({
+            isOpen:false
+        })
     }
     toggleDropdown=()=>{
         this.setState({
@@ -33,12 +50,13 @@ export default class MonthPicker extends Component{
         this.props.onChange(this.state.selectedYear,monthNumber)
     }
     render(){
+        console.log('render完成')
         const {year,month} = this.props
         const {isOpen,selectedYear,selectMonth} = this.state
         const monthRange = range(12,1)
         const yearRange = range(9,-4).map(number=>number+year)
         return(
-            <div className='dropdown month_picker'>
+            <div className='dropdown month_picker' ref={(ref)=>{this.node=ref}}>
                 <h4>Choose Month</h4>
                 <button 
                     className='btn btn-lg btn-secondary dropdown-toggle'
