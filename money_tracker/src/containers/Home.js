@@ -40,7 +40,9 @@ export class Home extends Component {
     }
   }
   componentDidMount() {
-    // this.props.actions.getInitalData()
+    this.props.actions.getInitialData().then(items=>{
+        console.log(items)
+    })
   }
   changeView = (index) => {
     this.setState({

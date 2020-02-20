@@ -4,9 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 import Home from './containers/Home'
 import Create from './containers/Create'
-import {testItems,testCategories} from './testData'
+// import {testItems,testCategories} from './testData'
 import {flatternArr,ID, parseToYearAndMonth} from './utility'
-
+import axios from 'axios'
 
 // console.log(flatternArr(testItems))
 export const AppContext = React.createContext()
@@ -14,23 +14,49 @@ class App extends Component{
     constructor(props){
         super(props);
         this.state={
-            items:flatternArr(testItems),
-            categories:flatternArr(testCategories)
+            items:{},
+            categories:{},
+            isLoading:false,
+            currentDate:parseToYearAndMonth()
         }
         this.actions = {
-            deleteItem:(item)=>{
-                console.log('before delete')
-                console.log(this.state.items)
-                delete this.state.items[item.id]
-                console.log('after delete')
-                console.log(this.state.items)
+            // async 会返回一个promise对象，await写成类似同步的写法
+            getInitialData: async ()=>{
+                this.setState({isLoading:true})
+                const {currentDate} = this.state
+                const getURLWithData = `/items?monthCategory=${currentDate.year}-${currentDate.month}&_sort=timestamp&_order=desc`
+                const result = await Promise.all([axios.get('/categories'),axios.get(getURLWithData)])
+                const [categories,items] = result
                 this.setState({
-                    items:this.state.items
+                    items:flatternArr(categories.data),
+                    categories:flatternArr(items.data),
+                    isLoading:false
                 })
+                return items
+            },
+            selectNewMonth: async (year,month)=>{
+                this.setState({isLoading:true})
+                // const {currentDate} = this.state
+                const getURLWithData = `/items?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`
+                const items = await axios.get(getURLWithData)
+                this.setState({
+                    items:flatternArr(items.data),
+                    currentDate:{year,month}
+                })
+                // 可有可无，看需求
+                return items
+            },
+            deleteItem: async (item)=>{
+                this.setState({isLoading:true})
+                const deleteItem = await axios.delete(`/items/${item.id}`)
+                delete this.state.items[item.id]
+                this.setState({
+                    items:this.state.items,
+                    isLoading:false
+                })
+                return deleteItem
             },
             createItem:(data,categoryId)=>{
-                console.log('hh',data)
-                console.log('cid',categoryId)
                 const newId = ID()
                 const parsedDate = parseToYearAndMonth(data.date)
                 data.monthCategory=`${parsedDate.year}-${parsedDate.month}`
@@ -39,11 +65,27 @@ class App extends Component{
                 this.setState({
                     items:{...this.state.items,[newId]:newItem}
                 })
+            },
+            updateItem:(item,updateCategoryId)=>{
+                const modifiedItem = {
+                    ...item,
+                    cid:updateCategoryId,
+                    timeStamp:new Date(item.date).getTime()
+                }
+                this.setState({
+                    items:{...this.state.items,[modifiedItem.id]:modifiedItem}
+                })
             }
             
         }
     }
+    componentDidMount(){
+        this.actions.getInitialData()
+    }
     render(){
+        console.log('state')
+        console.log(this.state.items)
+        console.log(this.state.categories)
         return(
             <AppContext.Provider 
                 value={{state:this.state,actions:this.actions}}
