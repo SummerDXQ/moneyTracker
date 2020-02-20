@@ -6,6 +6,8 @@ import MonthPicker from '../components/MonthPicker'
 import TotalPrice from '../components/TotalPrice'
 import CreateBtn from '../components/CreateBtn'
 // import logo from '../logo.svg'
+import {Tabs, Tab} from '../components/Tabs'
+import Ionicon from 'react-ionicons'
 
 export const category = {
     '1':{
@@ -58,20 +60,20 @@ const newItem = {
     'date':'2020-09-10',
     'cid':1
 }  
-
+const tabsText = [LIST_VIEW,CHART_VIEW]
 class Home extends Component{
     constructor(props){
         super(props);
         this.state={
             items,
             currentDate:parseToYearAndMonth(),
-            tabView:LIST_VIEW
+            tabView:tabsText[0]
         }
     }
 
-    onChangeView = (view) =>{
+    onChangeView = (index) =>{
         this.setState({
-        tabView:view
+            tabView:tabsText[index]
         })
     }
 
@@ -152,10 +154,30 @@ class Home extends Component{
                     </div>
                 </header>
                 <div className='content-area py-3 px-3'>
-                    <ViewTab
+                    <Tabs activeIndex={0} onTabChange={this.onChangeView}>
+                        <Tab>
+                        <Ionicon
+                            className='rounded-circle mr-2'
+                            fontSize='25px'
+                            color={'#007bff'}
+                            icon='ios-paper'
+                        />
+                        List Mode
+                        </Tab>
+                        <Tab>
+                            <Ionicon
+                                className='rounded-circle mr-2'
+                                fontSize='25px'
+                                color={'#007bff'}
+                                icon='ios-pie'
+                            />
+                            Chart Mode
+                        </Tab>
+                    </Tabs>
+                    {/* <ViewTab
                         activeTab={LIST_VIEW}
                         onTabChange={this.onChangeView}
-                    /> 
+                    />  */}
                     <CreateBtn onClick={this.createItem}/>
                     { tabView === LIST_VIEW &&
                     <PriceList 
