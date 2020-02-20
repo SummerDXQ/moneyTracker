@@ -5,7 +5,7 @@ import './App.css';
 import Home from './containers/Home'
 import Create from './containers/Create'
 import {testItems,testCategories} from './testData'
-import {flatternArr} from './utility'
+import {flatternArr,ID, parseToYearAndMonth} from './utility'
 
 
 // console.log(flatternArr(testItems))
@@ -14,13 +14,40 @@ class App extends Component{
     constructor(props){
         super(props);
         this.state={
-            item:flatternArr(testItems),
+            items:flatternArr(testItems),
             categories:flatternArr(testCategories)
+        }
+        this.actions = {
+            deleteItem:(item)=>{
+                console.log('before delete')
+                console.log(this.state.items)
+                delete this.state.items[item.id]
+                console.log('after delete')
+                console.log(this.state.items)
+                this.setState({
+                    items:this.state.items
+                })
+            },
+            createItem:(data,categoryId)=>{
+                console.log('hh',data)
+                console.log('cid',categoryId)
+                const newId = ID()
+                const parsedDate = parseToYearAndMonth(data.date)
+                data.monthCategory=`${parsedDate.year}-${parsedDate.month}`
+                data.timestamp=new Date(data.date).getTime()
+                const newItem = {...data,id:newId,cid:categoryId} 
+                this.setState({
+                    items:{...this.state.items,[newId]:newItem}
+                })
+            }
+            
         }
     }
     render(){
         return(
-            <AppContext.Provider value={{state:this.state}}>
+            <AppContext.Provider 
+                value={{state:this.state,actions:this.actions}}
+            >
                 <Router>
                     <div className="App">
                         <Route exact path="/" component={Home}></Route>

@@ -6,8 +6,8 @@ const WithContext = (Component) =>{
         return(
             <AppContext.Consumer>
                 {
-                    ({state})=>{
-                        return <Component {...props} data={state}></Component>
+                    ({state,actions})=>{
+                        return <Component {...props} data={state} actions={actions}></Component>
                     }
                 }
             </AppContext.Consumer>
