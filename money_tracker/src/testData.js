@@ -1,42 +1,42 @@
 export const testCategories = [
   {
-    "name": "旅行",
+    "name": "Travel",
     "iconName": "ios-plane",
     "id": "1",
     "type": "outcome"
   },
   {
-    "name": "餐饮",
+    "name": "Food",
     "iconName": "ios-restaurant",
     "id": "2",
     "type": "outcome"
   },
   {
-    "name": "购物",
+    "name": "Shopping",
     "iconName": "ios-basket",
     "id": "3",
     "type": "outcome"
   },
   {
-    "name": "数码",
+    "name": "Digital",
     "iconName": "ios-phone-portrait",
     "id": "4",
     "type": "outcome"
   },
   {
-    "name": "工资",
+    "name": "Salary",
     "iconName": "ios-card",
     "id": "10",
     "type": "income"
   },
   {
-    "name": "兼职",
+    "name": "Part-time",
     "iconName": "ios-cash",
     "id": "11",
     "type": "income"
   },
   {
-    "name": "理财",
+    "name": "Finance",
     "iconName": "logo-yen",
     "id": "12",
     "type": "income"

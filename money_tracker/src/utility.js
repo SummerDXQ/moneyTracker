@@ -32,11 +32,12 @@ export const isValidDate = (dateString) => {
 }
 
 export const flatternArr = (arr) => {
-  return arr.reduce((map, item) => {
-    map[item.id] = item
-    return map
-  }, {})
-}
+    // previous value & current value
+    return arr.reduce((map, item) => {
+        map[item.id] = item
+        return map
+    }, {}) 
+} 
 
 export const ID = () => {
   // Math.random should be unique because of its seeding algorithm.

@@ -5,9 +5,9 @@ import ViewTab from '../components/ViewTab'
 import MonthPicker from '../components/MonthPicker'
 import TotalPrice from '../components/TotalPrice'
 import CreateBtn from '../components/CreateBtn'
-// import logo from '../logo.svg'
 import {Tabs, Tab} from '../components/Tabs'
 import Ionicon from 'react-ionicons'
+import {AppContext} from '../App'
 
 export const category = {
     '1':{
@@ -98,10 +98,9 @@ class Home extends Component{
     }
 
     createItem = () => {
-        // console.log()
         this.setState({
             items:[newItem,...this.state.items]
-        },console.log(this.state.items))
+        })
     }
 
     deleteItem = (deleteItem) => {
@@ -114,15 +113,11 @@ class Home extends Component{
     render(){
         const {items,currentDate,tabView} = this.state;
         const itemsWithCategory = items.map(item=>{
-            // console.log('item')
-            // console.log(item)
             item.category = category[item.cid]
             return items
         }).filter((item,index)=>{
             return item[index].date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`)
         })
-        console.log('itemsWithCategory') 
-        console.log(itemsWithCategory) 
         let totalIncome=0, totalOutcome=0;
         itemsWithCategory.forEach((item,index)=>{
             if(item[index].category.type===TYPE_OUTCOME){
@@ -132,68 +127,78 @@ class Home extends Component{
             }
         })
         return(
-            <React.Fragment>
-                <header className='App-header'>
-                    <div className='row mb-5'>
-                        <h1>Money Tracker</h1>
-                    </div>
-                    <div className='row'>
-                        <div className='col'>
-                            <MonthPicker
-                                year={2020}
-                                month={2}
-                                onChange={this.onChangeDate}
-                            />
-                        </div>
-                        <div className='col'>
-                            <TotalPrice
-                                income = {totalIncome}
-                                outcome = {totalOutcome}
-                            />
-                        </div>
-                    </div>
-                </header>
-                <div className='content-area py-3 px-3'>
-                    <Tabs activeIndex={0} onTabChange={this.onChangeView}>
-                        <Tab>
-                        <Ionicon
-                            className='rounded-circle mr-2'
-                            fontSize='25px'
-                            color={'#007bff'}
-                            icon='ios-paper'
-                        />
-                        List Mode
-                        </Tab>
-                        <Tab>
-                            <Ionicon
-                                className='rounded-circle mr-2'
-                                fontSize='25px'
-                                color={'#007bff'}
-                                icon='ios-pie'
-                            />
-                            Chart Mode
-                        </Tab>
-                    </Tabs>
-                    {/* <ViewTab
-                        activeTab={LIST_VIEW}
-                        onTabChange={this.onChangeView}
-                    />  */}
-                    <CreateBtn onClick={this.createItem}/>
-                    { tabView === LIST_VIEW &&
-                    <PriceList 
-                        items = {itemsWithCategory}
-                        onModifyItem = {this.modifyItem}
-                        onDeleteItem = {this.deleteItem}
-                    ></PriceList>
+            <AppContext.Consumer>
+                {
+                    ({state}) => {
+                        console.log(state)
+                        return(
+                            <React.Fragment>
+                                <header className='App-header'>
+                                    <div className='row mb-5'>
+                                        <h1>Money Tracker</h1>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col'>
+                                            <MonthPicker
+                                                year={2020}
+                                                month={2}
+                                                onChange={this.onChangeDate}
+                                            />
+                                        </div>
+                                        <div className='col'>
+                                            <TotalPrice
+                                                income = {totalIncome}
+                                                outcome = {totalOutcome}
+                                            />
+                                        </div>
+                                    </div>
+                                </header>
+                                <div className='content-area py-3 px-3'>
+                                    <Tabs activeIndex={0} onTabChange={this.onChangeView}>
+                                        <Tab>
+                                        <Ionicon
+                                            className='rounded-circle mr-2'
+                                            fontSize='25px'
+                                            color={'#007bff'}
+                                            icon='ios-paper'
+                                        />
+                                        List Mode
+                                        </Tab>
+                                        <Tab>
+                                            <Ionicon
+                                                className='rounded-circle mr-2'
+                                                fontSize='25px'
+                                                color={'#007bff'}
+                                                icon='ios-pie'
+                                            />
+                                            Chart Mode
+                                        </Tab>
+                                    </Tabs>
+                                    {/* <ViewTab
+                                        activeTab={LIST_VIEW}
+                                        onTabChange={this.onChangeView}
+                                    />  */}
+                                    <CreateBtn onClick={this.createItem}/>
+                                    { tabView === LIST_VIEW &&
+                                    <PriceList 
+                                        items = {itemsWithCategory}
+                                        onModifyItem = {this.modifyItem}
+                                        onDeleteItem = {this.deleteItem}
+                                    ></PriceList>
+                                    }
+                                    {
+                                        tabView === CHART_VIEW &&
+                                        <h1>This is chart mode</h1>
+                                    }
+                                </div>
+                            </React.Fragment>
+                        )
                     }
-                    {
-                        tabView === CHART_VIEW &&
-                        <h1>This is chart mode</h1>
-                    }
-                </div>
-            </React.Fragment>
+                }
+            
+            </AppContext.Consumer>
           )
       }
   }
 
-  export default Home;
+export default Home;
