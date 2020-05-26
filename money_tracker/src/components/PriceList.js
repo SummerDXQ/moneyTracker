@@ -2,15 +2,13 @@ import React from 'react'
 import Ionicon from 'react-ionicons'
 import PropTypes from 'prop-types'
 import { Colors } from '../utility'
+
 const PriceList = ({ items, onModifyItem, onDeleteItem }) => {
   return (
     <ul className="list-group list-group-flush">
       {
         items.map((item) => (
-          <li className="list-group-item d-flex 
-            justify-content-between align-items-center"
-            key={item.id}
-          >
+          <li className="list-group-item d-flex justify-content-between align-items-center" key={item.id}>
             <span className="col-1">
               <Ionicon 
                 className="rounded-circle"
@@ -26,10 +24,7 @@ const PriceList = ({ items, onModifyItem, onDeleteItem }) => {
               {item.price}元
             </span>
             <span className="col-2">{item.date}</span>
-            <a className="col-1"
-              role="button"
-              onClick={(event) => {event.preventDefault(); onModifyItem(item)}}
-            >
+            <a className="col-1" role="button" onClick={(event) => {event.preventDefault(); onModifyItem(item)}}>
               <Ionicon 
                 className="rounded-circle"
                 fontSize="30px"
@@ -38,10 +33,7 @@ const PriceList = ({ items, onModifyItem, onDeleteItem }) => {
                 icon='ios-create-outline'
               />
             </a>
-            <a className="col-1"
-              role="button"
-              onClick={(event) => {event.preventDefault(); onDeleteItem(item)}}
-            >
+            <a className="col-1" role="button" onClick={(event) => {event.preventDefault(); onDeleteItem(item)}}>
               <Ionicon 
                 className="rounded-circle"
                 fontSize="30px"

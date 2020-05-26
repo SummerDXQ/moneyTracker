@@ -1,7 +1,8 @@
-import React from 'react'
+import React,{Component} from 'react'
 import PropTypes from 'prop-types'
 import { padLeft, range } from '../utility'
-class MonthPicker extends React.Component {
+
+class MonthPicker extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -15,6 +16,8 @@ class MonthPicker extends React.Component {
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClick, false)
   }
+
+  // when click outside the dropdown, the menu will hide
   handleClick = (event) => {
     if (this.node.contains(event.target)) {
       return;
@@ -23,6 +26,8 @@ class MonthPicker extends React.Component {
       isOpen: false,
     })
   }
+
+  // control dropdown menu
   toggleDropdown = (event) => {
     event.preventDefault()
     this.setState({
@@ -44,8 +49,8 @@ class MonthPicker extends React.Component {
   }
   render() {
     const { year, month } = this.props
-    const { selectedYear } = this.state
-    const { isOpen } = this.state
+    const { selectedYear, isOpen } = this.state
+    // const { isOpen } = this.state
     const monthRange = range(12, 1)
     const yearRange = range(9, -4).map(number => number + year)
     return (
@@ -62,8 +67,7 @@ class MonthPicker extends React.Component {
             <div className="row">
               <div className="col border-right years-range">
                 { yearRange.map((yearNumber, index) => 
-                  <a key={index}
-                    role="button"
+                  <a key={index} role="button"
                     onClick={(event) => {this.selectYear(event, yearNumber)}} 
                     className={(yearNumber === selectedYear) ? "dropdown-item active text-white" : "dropdown-item"}>
                     {yearNumber} 年
